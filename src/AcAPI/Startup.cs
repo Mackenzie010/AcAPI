@@ -1,5 +1,4 @@
 ﻿using AcAPI.BLL;
-using AcAPI.DAL;
 using AcAPI.DAO;
 using AcAPI.Helpers;
 using Microsoft.OpenApi.Models;
@@ -18,8 +17,20 @@ namespace AcAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IUsuario, UsuarioBO>();
-            services.AddSingleton<IUsuarioDAO, UsuarioDAO>();
+            services.AddScoped<IUsuarioDAO, UsuarioDAO>();
+            services.AddScoped<ILab, LabBO>();
+            services.AddScoped<ILabDAO, LabDAO>();
+            
 
+            services.AddCors(op =>
+            {
+                op.AddPolicy("teste", policy =>
+                {
+                    policy.AllowAnyOrigin();
+                    policy.AllowAnyHeader();
+                    policy.AllowAnyMethod();
+                });
+            });
 
             services.AddControllers()
                 .AddJsonOptions(options =>
@@ -27,8 +38,8 @@ namespace AcAPI
                     options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
                 });
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
+
             services.AddSwaggerGen(p =>
             {
                 p.SwaggerDoc("v1", new OpenApiInfo { Title = "Atividade Contínua", Version = "v1", Description = "Felipe Mackenzie de Campos / Gabriel Marques Fernandes / João Pedro Matias Neves / Matheus Soares Bezerra / Pedro Vysomirsksis Fuentes / Rafael Marques Fernandes " });
@@ -37,25 +48,21 @@ namespace AcAPI
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // Configure the HTTP request pipeline.
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSwagger(p =>
-            {
-                p.SerializeAsV2 = true;
-            });
-
+            app.UseSwagger();
             app.UseSwaggerUI(p =>
             {
                 p.RoutePrefix = string.Empty;
                 p.SwaggerEndpoint("/swagger/v1/swagger.json", "AcAPI");
-                p.DefaultModelExpandDepth(-1);
-            });
+            });                       
 
             app.UseRouting();
+
+            app.UseCors("teste");
 
             app.UseHttpsRedirection();
 

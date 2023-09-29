@@ -1,25 +1,52 @@
-﻿using AcAPI.DAL;
+﻿using AcAPI.DAO;
 using AcAPI.DTL;
 
 namespace AcAPI.BLL
 {
     public class UsuarioBO : IUsuario
     {
-        private readonly IUsuarioDAO _usuarioDAO;
+        private readonly IUsuarioDAO _usuariosDAO;
 
         public UsuarioBO(IUsuarioDAO usuarioDAO)
         {
-            _usuarioDAO = usuarioDAO;
+            _usuariosDAO = usuarioDAO;
         }
 
-        public void Adicionar(UsuarioDTO usuario)
+        void IUsuario.Adicionar(UsuarioDTO usuario)
         {
-            _usuarioDAO.Adicionar(usuario); 
+            _usuariosDAO.Incluir(usuario);
         }
 
-        public List<UsuarioDTO> Listar()
+        void IUsuario.Excluir(int id)
         {
-            return _usuarioDAO.Listar();
+            _usuariosDAO.Excluir(id);
+        }
+
+        List<UsuarioDTO> IUsuario.Listar()
+        {
+            return _usuariosDAO.Listar();
+        }
+        public UsuarioDTO Login(string Email, string Password)
+        {
+            return _usuariosDAO.Login(Email,Password);
+        }
+
+        void IUsuario.Atualizar(UsuarioDTO usuario)
+        {
+            _usuariosDAO.Atualizar(usuario);
+        }
+        void IUsuario.Ativar(int id)
+        {
+            _usuariosDAO.Ativar(id);
+        }
+
+        public UsuarioDTO SelecionarUsuario(int id)
+        {
+            return _usuariosDAO.SelecionarUsuario(id);
+        }
+        void IUsuario.Inativar(int id)
+        {
+            _usuariosDAO.Inativar(id);
         }
     }
 }

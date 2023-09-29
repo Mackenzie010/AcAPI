@@ -1,3 +1,4 @@
+Ôªøusing AcAPI.BLL;
 using AcAPI.DAO;
 using AcAPI.DTL;
 using Microsoft.AspNetCore.Mvc;
@@ -6,59 +7,79 @@ namespace AcAPI
 {
     [ApiController]
     [Route("[Controller]")]
-    public class UsuarioController : ControllerBase
+    public class LabController : ControllerBase
     {
-        private readonly IUsuario _usuario;
+        private readonly ILab _lab;
 
-        public UsuarioController(IUsuario usuario)
+        public LabController(ILab lab)
         {
-            _usuario = usuario;
+            _lab = lab;
         }
 
         [HttpGet]
         [Route(nameof(Listar))]
         public IActionResult Listar()
         {
-            return Ok(_usuario.Listar());
+            return Ok(_lab.Listar());
         }
 
+        [HttpGet]
+        [Route(nameof(SelecionarLab))]
+        public IActionResult SelecionarLab(int id)
+        {
+            var lab = _lab.SelecionarLab(id);
+
+            if (lab == null)
+            {
+                return NotFound(new
+                {
+                    data = new
+                    {
+                        errors = "Este Lab n√£o existe"
+                    }
+                });
+            }
+            else
+            {
+                return Ok(lab);
+            }
+        }
         [HttpPost]
         [Route(nameof(Adicionar))]
-        public IActionResult Adicionar(UsuarioDTO usuario)
+        public IActionResult Adicionar(LabDTO lab)
         {
-            _usuario.Adicionar(usuario);
+            _lab.Adicionar(lab);
             return Ok();
-
         }
 
         [HttpDelete]
         [Route(nameof(Excluir))]
         public IActionResult Excluir(int id)
         {
-            _usuario.Excluir(id);
+            _lab.Excluir(id);
 
-            var usuario = _usuario.SelecionarUsuario(id);
-            if (usuario == null)
+            var lab = _lab.SelecionarLab(id);
+            if (lab == null)
             {
                 return NotFound(new
                 {
                     data = new
                     {
-                        errors = "Usu·rio n„o encontrado"
+                        errors = "Lab n√£o encontrado"
                     }
                 });
             }
             else
             {
-                return Ok(usuario);
+                return Ok(lab);
             }
         }
 
         [HttpPut]
         [Route(nameof(Atualizar))]
-        public IActionResult Atualizar(UsuarioDTO usuario)
+        public IActionResult Atualizar(LabDTO lab)
         {
-            _usuario.Atualizar(usuario);
+            _lab.Atualizar(lab);
             return Ok();
         }
 
@@ -66,45 +87,45 @@ namespace AcAPI
         [Route(nameof(Ativar))]
         public IActionResult Ativar(int id)
         {
-            _usuario.Ativar(id);
+            _lab.Ativar(id);
 
-            var usuario = _usuario.SelecionarUsuario(id);
-            if (usuario == null)
+            var lab = _lab.SelecionarLab(id);
+            if (lab == null)
             {
                 return NotFound(new
                 {
                     data = new
                     {
-                        errors = "Usu·rio n„o encontrado"
+                        message = "Lab n√£o encontrado"
                     }
                 });
             }
             else
             {
-                var mensagem = "Enviamos um link de confirmaÁ„o no seu email, por gentileza faÁa a verificaÁ„o";
                 return Ok(new
                 {
                     data = new
                     {
-                        message = mensagem,
+                        message = "Lab ativado com sucesso!"
                     }
                 });
             }
+
         }
         [HttpPut]
         [Route(nameof(Inativar))]
         public IActionResult Inativar(int id)
         {
-            _usuario.Inativar(id);
+            _lab.Inativar(id);
 
-            var usuario = _usuario.SelecionarUsuario(id);
-            if (usuario == null)
+            var lab = _lab.SelecionarLab(id);
+            if (lab == null)
             {
                 return NotFound(new
                 {
                     data = new
                     {
-                        message = "Usu·rio n„o encontrado"
+                        message = "Lab n√£o encontrado"
                     }
                 });
             }
@@ -114,10 +135,12 @@ namespace AcAPI
                 {
                     data = new
                     {
-                        message = "Usu·rio inativado com sucesso"
+                        message = "Lab desativado com sucesso!"
                     }
                 });
             }
         }
     }
 }
+
+
