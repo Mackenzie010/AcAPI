@@ -1,4 +1,5 @@
 ﻿using AcAPI.BLL;
+using AcAPI.DAL;
 using AcAPI.DAO;
 using AcAPI.DTL;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,11 @@ namespace AcAPI
     public class LabController : ControllerBase
     {
         private readonly ILab _lab;
-
-        public LabController(ILab lab)
+        private readonly IRickDAO _rickDAO;
+        public LabController(ILab lab, IRickDAO rickDAO)
         {
             _lab = lab;
+            _rickDAO = rickDAO;
         }
 
         [HttpGet]
@@ -139,6 +141,20 @@ namespace AcAPI
                     }
                 });
             }
+        }
+        [HttpGet]
+        [Route(nameof(getTeste))]
+        public IActionResult getTeste()
+        {
+            var retorno  =_rickDAO.get();
+            return Ok(retorno);
+        }
+        [HttpPost]
+        [Route(nameof(putTeste))]
+        public IActionResult putTeste()
+        {
+            var retorno = _rickDAO.put();
+            return Ok(retorno);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AcAPI.BLL;
+using AcAPI.DAL;
 using AcAPI.DAO;
 using AcAPI.Helpers;
 using Microsoft.OpenApi.Models;
@@ -20,7 +21,8 @@ namespace AcAPI
             services.AddScoped<IUsuarioDAO, UsuarioDAO>();
             services.AddScoped<ILab, LabBO>();
             services.AddScoped<ILabDAO, LabDAO>();
-            
+            services.AddScoped<IRickDAO, RickDAO>();
+
 
             services.AddCors(op =>
             {
@@ -44,6 +46,8 @@ namespace AcAPI
             {
                 p.SwaggerDoc("v1", new OpenApiInfo { Title = "Atividade Contínua", Version = "v1", Description = "Felipe Mackenzie de Campos / Gabriel Marques Fernandes / João Pedro Matias Neves / Matheus Soares Bezerra / Pedro Vysomirsksis Fuentes / Rafael Marques Fernandes " });
             });
+
+            services.AddHttpClient();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
