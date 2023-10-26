@@ -24,10 +24,10 @@ namespace AcAPI
         }
 
         [HttpGet]
-        [Route(nameof(SelecionarLab))]
-        public IActionResult SelecionarLab(int id)
+        [Route(nameof(ListarPorID))]
+        public IActionResult ListarPorID(int id)
         {
-            var lab = _lab.SelecionarLab(id);
+            var lab = _lab.ListarPorID(id);
 
             if (lab == null)
             {
@@ -58,7 +58,7 @@ namespace AcAPI
         {
             _lab.Excluir(id);
 
-            var lab = _lab.SelecionarLab(id);
+            var lab = _lab.ListarPorID(id);
             if (lab == null)
             {
                 return NotFound(new
@@ -89,7 +89,7 @@ namespace AcAPI
         {
             _lab.Ativar(id);
 
-            var lab = _lab.SelecionarLab(id);
+            var lab = _lab.ListarPorID(id);
             if (lab == null)
             {
                 return NotFound(new
@@ -118,7 +118,7 @@ namespace AcAPI
         {
             _lab.Inativar(id);
 
-            var lab = _lab.SelecionarLab(id);
+            var lab = _lab.ListarPorID(id);
             if (lab == null)
             {
                 return NotFound(new

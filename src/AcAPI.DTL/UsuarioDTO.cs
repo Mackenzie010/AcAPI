@@ -6,7 +6,7 @@
 
         public string Name { get; set; }
 
-        public DateOnly Birthday { get; set; }
+        public DateTime Birthday { get; set; }
 
         public string Email { get; set; }
 

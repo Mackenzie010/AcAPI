@@ -10,6 +10,6 @@ namespace AcAPI.DAO
         void Excluir(int id);
         public void Ativar(int id);
         public void Inativar(int id);
-        public LabDTO SelecionarLab(int id);
+        public LabDTO ListarPorID(int id);
     }
 }

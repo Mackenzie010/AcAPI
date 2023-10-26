@@ -26,14 +26,14 @@ namespace AcAPI.BLL
         {
             return _labDAO.Listar();
         }
-
+         
         public void Atualizar(LabDTO lab)
         {
             _labDAO.Atualizar(lab);
         }
-        public LabDTO SelecionarLab(int id)
+        public LabDTO ListarPorID(int id)
         {
-            return _labDAO.SelecionarLab(id);
+            return _labDAO.ListarPorID(id);
         }
         void ILab.Ativar(int id)
         {

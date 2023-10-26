@@ -1,13 +1,15 @@
 ﻿using AcAPI.DTL;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using MySql.Data.MySqlClient;
 
 namespace AcAPI.DAO
 {
     public class LabDAO : ILabDAO
     {
         
-        private string connString = "Data Source=FERNANDACAMPOS;Initial Catalog=AC_2;Integrated Security=True; TrustServerCertificate=True";
+        //private string connString = "Data Source=FERNANDACAMPOS;Initial Catalog=AC_2;Integrated Security=True; TrustServerCertificate=True";
+        private string connString = "Server=db4free.net;Database=acapi10;Uid=felipemack;Pwd=Gavioesdafiel04";
 
         private readonly string _cn;
         public LabDAO(IConfiguration configuration)
@@ -27,12 +29,12 @@ namespace AcAPI.DAO
             List<LabDTO> MarcacaoLab = new List<LabDTO>();
             
 
-            using (SqlConnection connection = new  SqlConnection(connString))
+            using (MySqlConnection connection = new  MySqlConnection(connString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * from LAB_API", connection);
+                MySqlCommand cmd = new MySqlCommand("SELECT * from LAB_API", connection);
                 cmd.CommandType = System.Data.CommandType.Text;
                 connection.Open();
-                SqlDataReader rdr = cmd.ExecuteReader();
+                MySqlDataReader rdr = cmd.ExecuteReader();
 
                 while (rdr.Read())
                 {
@@ -55,11 +57,11 @@ namespace AcAPI.DAO
 
         public void Incluir(LabDTO lab)
         {
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (MySqlConnection connection = new MySqlConnection(connString))
             {
                 connection.Open();
                 string query = ("INSERT INTO LAB_API ( DT_CADASTRO, ANDAR, LAB, DESCRICAO , ATIVO) VALUES ( @DT_CADASTRO, @ANDAR, @LAB, @DESCRICAO, @ATIVO)");
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (MySqlCommand command = new MySqlCommand(query, connection))
 
                 {
                     command.Parameters.AddWithValue("@DT_CADASTRO", lab.Dt_Cadastro);
@@ -76,12 +78,12 @@ namespace AcAPI.DAO
         }
         public void Excluir(int id)
         {
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (MySqlConnection connection = new MySqlConnection(connString))
             {
                 connection.Open();
                 string query = $"DELETE FROM LAB_API where Id = {id}";
 
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                    
                     command.ExecuteNonQuery();
@@ -92,12 +94,12 @@ namespace AcAPI.DAO
         }
         public void Atualizar(LabDTO lab)
         {
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (MySqlConnection connection = new MySqlConnection(connString))
             {
                 connection.Open();
                 string query = "UPDATE LAB_API SET DT_CADASTRO = @DT_CADASTRO, ANDAR = @ANDAR, LAB = @LAB, DESCRICAO = @DESCRICAO, ATIVO = @ATIVO WHERE ID = @ID";
 
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@ID", lab.Id);
                     command.Parameters.AddWithValue("@DT_CADASTRO", lab.Dt_Cadastro);
@@ -112,22 +114,22 @@ namespace AcAPI.DAO
             }
 
         }
-        public LabDTO SelecionarLab(int id)
+        public LabDTO ListarPorID(int id)
         {
             LabDTO lab = null;
-            using (SqlConnection con = new SqlConnection(connString))
+            using (MySqlConnection con = new MySqlConnection(connString))
             {
                 con.Open();
 
                 string query = "SELECT * FROM LAB_API WHERE ID = @ID";
 
-                using (SqlCommand cmd = new SqlCommand(query, con))
+                using (MySqlCommand cmd = new MySqlCommand(query, con))
                 {
                     cmd.Parameters.AddWithValue("@ID", id);
                   
 
                     cmd.CommandType = System.Data.CommandType.Text;
-                    SqlDataReader rdr = cmd.ExecuteReader();
+                    MySqlDataReader rdr = cmd.ExecuteReader();
 
                     while (rdr.Read())
                     {
@@ -148,12 +150,12 @@ namespace AcAPI.DAO
         }
         public void Ativar(int id)
         {
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (MySqlConnection connection = new MySqlConnection(connString))
             {
                 connection.Open();
                 string query = "UPDATE LAB_API SET ATIVO = 1 WHERE ID = @ID";
 
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@ID", id);
 
@@ -165,12 +167,12 @@ namespace AcAPI.DAO
         }
         public void Inativar(int id)
         {
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (MySqlConnection connection = new MySqlConnection(connString))
             {
                 connection.Open();
                 string query = "UPDATE LAB_API SET ATIVO = 0 WHERE ID = @ID";
 
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@ID", id);
 

@@ -8,7 +8,7 @@ namespace AcAPI.DAO
     public class UsuarioDAO : IUsuarioDAO
     {
 
-        private string connString = "Data Source=FERNANDACAMPOS;Initial Catalog=AC_2;Integrated Security=True; TrustServerCertificate=True";
+        private string connString = "Server=db4free.net;Database=acapi10;Uid=felipemack;Pwd=Gavioesdafiel04";
 
         private readonly string _cn;
         public UsuarioDAO(IConfiguration configuration)
@@ -25,23 +25,23 @@ namespace AcAPI.DAO
 
         public List<UsuarioDTO> Listar()
         {
-            List<UsuarioDTO> MarcacaoLab = new List<UsuarioDTO>();
+            List<UsuarioDTO> Usuario = new List<UsuarioDTO>();
 
 
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (MySqlConnection connection = new MySqlConnection(connString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * from USUARIO_API", connection);
+                MySqlCommand cmd = new MySqlCommand("SELECT * from USUARIO_API", connection);
                 cmd.CommandType = System.Data.CommandType.Text;
                 connection.Open();
-                SqlDataReader rdr = cmd.ExecuteReader();
+                MySqlDataReader rdr = cmd.ExecuteReader();
 
                 while (rdr.Read())
                 {
-                    UsuarioDTO lab = new UsuarioDTO
+                    UsuarioDTO usuario = new UsuarioDTO
                     {
                         Id = Convert.ToInt32(rdr["ID"]),
                         Name = rdr["NOME"].ToString(),
-                        Birthday = DateOnly.FromDateTime(Convert.ToDateTime(rdr["DT_NASCIMENTO"])),
+                        Birthday = Convert.ToDateTime(rdr["DT_NASCIMENTO"]),
                         Email = rdr["EMAIL"].ToString(),
                         Cpf = rdr["CPF"].ToString(),
                         Phone = rdr["TELEFONE"].ToString(),
@@ -49,20 +49,20 @@ namespace AcAPI.DAO
                         Password = rdr["SENHA"].ToString(),
                     };
 
-                    MarcacaoLab.Add(lab);
+                    Usuario.Add(usuario);
                 }
                 connection.Close();
             }
-            return MarcacaoLab;
+            return Usuario;
         }
 
         public void Incluir(UsuarioDTO usuario)
         {
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (MySqlConnection connection = new MySqlConnection(connString))
             {
                 connection.Open();
                 string query = ("INSERT INTO USUARIO_API ( NOME, DT_NASCIMENTO, EMAIL , CPF, TELEFONE, ATIVO, SENHA) VALUES ( @NOME, @DT_NASCIMENTO, @EMAIL, @CPF, @TELEFONE ,@ATIVO, @SENHA)");
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (MySqlCommand command = new MySqlCommand(query, connection))
 
                 {
 
@@ -84,12 +84,12 @@ namespace AcAPI.DAO
         }
         public void Excluir(int id)
         {
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (MySqlConnection connection = new MySqlConnection(connString))
             {
                 connection.Open();
                 string query = $"DELETE FROM USUARIO_API where Id = {id}";
 
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
 
                     command.ExecuteNonQuery();
@@ -100,12 +100,12 @@ namespace AcAPI.DAO
         }
         public void Atualizar(UsuarioDTO usuario)
         {
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (MySqlConnection connection = new MySqlConnection(connString))
             {
                 connection.Open();
                 string query = "UPDATE USUARIO_API SET NOME = @NOME, DT_NASCIMENTO = @DT_NASCIMENTO, EMAIL = @EMAIL, CPF = @CPF, TELEFONE = @TELEFONE, ATIVO = @ATIVO, SENHA = @SENHA WHERE ID = @ID";
 
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@ID", usuario.Id);
                     command.Parameters.AddWithValue("@NOME", usuario.Name);
@@ -125,19 +125,19 @@ namespace AcAPI.DAO
         public UsuarioDTO Login(string Email, string Password)
         {
             UsuarioDTO usuario = null;
-            using (SqlConnection con = new SqlConnection(connString))
+            using (MySqlConnection con = new MySqlConnection(connString))
             {
                 con.Open();
 
                 string query = "SELECT * FROM USUARIO_API WHERE EMAIL = @EMAIL AND SENHA = @SENHA";
 
-                using (SqlCommand cmd = new SqlCommand(query, con))
+                using (MySqlCommand cmd = new MySqlCommand(query, con))
                 {
                     cmd.Parameters.AddWithValue("@EMAIL", Email);
                     cmd.Parameters.AddWithValue("@SENHA", Password);
 
                     cmd.CommandType = System.Data.CommandType.Text;
-                    SqlDataReader rdr = cmd.ExecuteReader();
+                    MySqlDataReader rdr = cmd.ExecuteReader();
 
                     while (rdr.Read())
                     {
@@ -145,7 +145,7 @@ namespace AcAPI.DAO
                         {
                             Id = Convert.ToInt32(rdr["ID"]),
                             Name = rdr["NOME"].ToString(),
-                            Birthday = DateOnly.FromDateTime(Convert.ToDateTime(rdr["DT_NASCIMENTO"])),
+                            Birthday =Convert.ToDateTime(rdr["DT_NASCIMENTO"]),
                             Email = rdr["EMAIL"].ToString(),
                             Cpf = rdr["CPF"].ToString(),
                             Phone = rdr["TELEFONE"].ToString(),
@@ -159,21 +159,21 @@ namespace AcAPI.DAO
             return usuario;
         }
 
-        public UsuarioDTO SelecionarUsuario(int id)
+        public UsuarioDTO ListarPorID(int id)
         {
             UsuarioDTO usuario = null;
-            using (SqlConnection con = new SqlConnection(connString))
+            using (MySqlConnection con = new MySqlConnection(connString))
             {
                 con.Open();
 
                 string query = "SELECT * FROM USUARIO_API WHERE ID = @ID";
 
-                using (SqlCommand cmd = new SqlCommand(query, con))
+                using (MySqlCommand cmd = new MySqlCommand(query, con))
                 {
                     cmd.Parameters.AddWithValue("@ID", id);
 
                     cmd.CommandType = System.Data.CommandType.Text;
-                    SqlDataReader rdr = cmd.ExecuteReader();
+                    MySqlDataReader rdr = cmd.ExecuteReader();
 
                     while (rdr.Read())
                     {
@@ -181,7 +181,7 @@ namespace AcAPI.DAO
                         {
                             Id = Convert.ToInt32(rdr["ID"]),
                             Name = rdr["NOME"].ToString(),
-                            Birthday = DateOnly.FromDateTime(Convert.ToDateTime(rdr["DT_NASCIMENTO"])),
+                            Birthday = Convert.ToDateTime(rdr["DT_NASCIMENTO"]),
                             Email = rdr["EMAIL"].ToString(),
                             Cpf = rdr["CPF"].ToString(),
                             Phone = rdr["TELEFONE"].ToString(),
@@ -196,12 +196,12 @@ namespace AcAPI.DAO
         }
         public void Ativar(int id)
         { 
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (MySqlConnection connection = new MySqlConnection(connString))
             {
                 connection.Open();
                 string query = "UPDATE USUARIO_API SET ATIVO = 1 WHERE ID = @ID";
 
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {                 
                     command.Parameters.AddWithValue("@ID", id);
                    
@@ -213,12 +213,12 @@ namespace AcAPI.DAO
         }
         public void Inativar(int id)
         {
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (MySqlConnection connection = new MySqlConnection(connString))
             {
                 connection.Open();
                 string query = "UPDATE USUARIO_API SET ATIVO = 0 WHERE ID = @ID";
 
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@ID", id);
 

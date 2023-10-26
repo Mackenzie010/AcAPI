@@ -40,9 +40,9 @@ namespace AcAPI.BLL
             _usuariosDAO.Ativar(id);
         }
 
-        public UsuarioDTO SelecionarUsuario(int id)
+        public UsuarioDTO ListarPorID(int id)
         {
-            return _usuariosDAO.SelecionarUsuario(id);
+            return _usuariosDAO.ListarPorID(id);
         }
         void IUsuario.Inativar(int id)
         {

@@ -1,3 +1,4 @@
+using AcAPI.BLL;
 using AcAPI.DAO;
 using AcAPI.DTL;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,27 @@ namespace AcAPI
         {
             return Ok(_usuario.Listar());
         }
+        [HttpGet]
+        [Route(nameof(ListarPorID))]
+        public IActionResult ListarPorID(int id)
+        {
+            var usuario = _usuario.ListarPorID(id);
+
+            if (usuario == null)
+            {
+                return NotFound(new
+                {
+                    data = new
+                    {
+                        errors = "Este Usuario não existe"
+                    }
+                });
+            }
+            else
+            {
+                return Ok(usuario);
+            }
+        }
 
         [HttpPost]
         [Route(nameof(Adicionar))]
@@ -37,7 +59,7 @@ namespace AcAPI
         {
             _usuario.Excluir(id);
 
-            var usuario = _usuario.SelecionarUsuario(id);
+            var usuario = _usuario.ListarPorID(id);
             if (usuario == null)
             {
                 return NotFound(new
@@ -68,7 +90,7 @@ namespace AcAPI
         {
             _usuario.Ativar(id);
 
-            var usuario = _usuario.SelecionarUsuario(id);
+            var usuario = _usuario.ListarPorID(id);
             if (usuario == null)
             {
                 return NotFound(new
@@ -97,7 +119,7 @@ namespace AcAPI
         {
             _usuario.Inativar(id);
 
-            var usuario = _usuario.SelecionarUsuario(id);
+            var usuario = _usuario.ListarPorID(id);
             if (usuario == null)
             {
                 return NotFound(new
