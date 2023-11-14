@@ -1,8 +1,8 @@
 ﻿using AcAPI.BLL;
 using AcAPI.DAL;
-using AcAPI.DAO;
 using AcAPI.DTL;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Eventing.Reader;
 
 namespace AcAPI
 {
@@ -52,6 +52,7 @@ namespace AcAPI
         {
             _lab.Adicionar(lab);
             return Ok();
+
         }
 
         [HttpDelete]
@@ -142,21 +143,15 @@ namespace AcAPI
                 });
             }
         }
-        [HttpGet]
-        [Route(nameof(getTeste))]
-        public IActionResult getTeste()
-        {
-            var retorno  =_rickDAO.get();
-            return Ok(retorno);
-        }
         [HttpPost]
-        [Route(nameof(putTeste))]
-        public IActionResult putTeste()
+        [Route(nameof(PostTeste))]
+        public async Task<string> PostTeste(string boleto, int user_id)
         {
-            var retorno = _rickDAO.put();
-            return Ok(retorno);
+            var retorno = await _rickDAO.post(boleto, user_id);
+            return retorno;
+
+
         }
     }
 }
-
 

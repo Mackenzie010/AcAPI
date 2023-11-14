@@ -1,5 +1,4 @@
 ﻿using AcAPI.DTL;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 
