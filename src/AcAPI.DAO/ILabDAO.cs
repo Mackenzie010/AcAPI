@@ -11,5 +11,7 @@ namespace AcAPI.DAO
         public void Ativar(int id);
         public void Inativar(int id);
         public LabDTO ListarPorID(int id);
+        List<AgendamentoDTO> ListarAgendamentosPorLab(int idLab);
+        void IncluirAgendamento(AgendamentoDTO agendamento);
     }
 }

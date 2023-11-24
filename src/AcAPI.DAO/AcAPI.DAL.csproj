@@ -9,7 +9,9 @@
   <ItemGroup>
     <Compile Remove="ILogin.cs" />
     <Compile Remove="ILoginDAO.cs" />
+    <Compile Remove="IRickDAO.cs" />
     <Compile Remove="LoginDAO.cs" />
+    <Compile Remove="RickDAO.cs" />
   </ItemGroup>
 
   <ItemGroup>

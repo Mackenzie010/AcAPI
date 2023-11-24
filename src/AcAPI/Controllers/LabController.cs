@@ -1,8 +1,7 @@
 ﻿using AcAPI.BLL;
-using AcAPI.DAL;
+using AcAPI.DAO;
 using AcAPI.DTL;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.Eventing.Reader;
 
 namespace AcAPI
 {
@@ -11,13 +10,10 @@ namespace AcAPI
     public class LabController : ControllerBase
     {
         private readonly ILab _lab;
-        private readonly IRickDAO _rickDAO;
-        public LabController(ILab lab, IRickDAO rickDAO)
+        public LabController(ILab lab)
         {
             _lab = lab;
-            _rickDAO = rickDAO;
         }
-
         [HttpGet]
         [Route(nameof(Listar))]
         public IActionResult Listar()
@@ -46,11 +42,29 @@ namespace AcAPI
                 return Ok(lab);
             }
         }
+
+        [HttpGet]
+        [Route(nameof(ListarAgendamentosPorLab))]
+        public IActionResult ListarAgendamentosPorLab(int idLab)
+        {
+            var lab = _lab.ListarAgendamentosPorLab(idLab);
+            return Ok(lab);
+        }
+
         [HttpPost]
         [Route(nameof(Adicionar))]
         public IActionResult Adicionar(LabDTO lab)
         {
             _lab.Adicionar(lab);
+            return Ok();
+
+        }
+
+        [HttpPost]
+        [Route(nameof(IncluirAgendamento))]
+        public IActionResult IncluirAgendamento(AgendamentoDTO agendamento)
+        {
+            _lab.IncluirAgendamento(agendamento);
             return Ok();
 
         }
@@ -143,15 +157,7 @@ namespace AcAPI
                 });
             }
         }
-        [HttpPost]
-        [Route(nameof(PostTeste))]
-        public async Task<string> PostTeste(string boleto, int user_id)
-        {
-            var retorno = await _rickDAO.post(boleto, user_id);
-            return retorno;
 
-
-        }
     }
 }
 

@@ -41,7 +41,7 @@ namespace AcAPI.DAO
                     LabDTO lab = new LabDTO
                     {
                         Id = Convert.ToInt32(rdr["ID"]),
-                        Dt_Cadastro = DateOnly.FromDateTime(Convert.ToDateTime(rdr["DT_CADASTRO"])),
+                        Dt_Cadastro = Convert.ToDateTime(rdr["DT_CADASTRO"]),
                         Lab = rdr["LAB"].ToString(),
                         Descricao = rdr["DESCRICAO"].ToString(),
                         Andar = Convert.ToInt32(rdr["ANDAR"]),
@@ -72,6 +72,26 @@ namespace AcAPI.DAO
                    
                     command.ExecuteNonQuery();
                     
+                }
+                connection.Close();
+            }
+        }
+
+        public void IncluirAgendamento(AgendamentoDTO agendamento)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connString))
+            {
+                connection.Open();
+                string query = ("INSERT INTO AGENDAMENTO ( DATA, ID_LAB, ID_USUARIO) VALUES ( @DATA, @ID_LAB, @ID_USUARIO)");
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+
+                {
+                    command.Parameters.AddWithValue("@DATA", agendamento.Data);
+                    command.Parameters.AddWithValue("@ID_LAB", agendamento.IdLab);
+                    command.Parameters.AddWithValue("@ID_USUARIO", agendamento.IdUsuario);
+
+                    command.ExecuteNonQuery();
+
                 }
                 connection.Close();
             }
@@ -136,7 +156,7 @@ namespace AcAPI.DAO
                         lab = new LabDTO
                         {
                             Id = Convert.ToInt32(rdr["ID"]),
-                            Dt_Cadastro = DateOnly.FromDateTime(Convert.ToDateTime(rdr["DT_CADASTRO"])),
+                            Dt_Cadastro = Convert.ToDateTime(rdr["DT_CADASTRO"]),
                             Lab = rdr["LAB"].ToString(),
                             Descricao = rdr["DESCRICAO"].ToString(),
                             Andar = Convert.ToInt32(rdr["ANDAR"]),
@@ -147,6 +167,49 @@ namespace AcAPI.DAO
                 }
             }
             return lab;
+        }
+
+        public List<AgendamentoDTO> ListarAgendamentosPorLab(int idLab)
+        {
+
+            List<AgendamentoDTO> agendamentos = new List<AgendamentoDTO>();
+            using (MySqlConnection con = new MySqlConnection(connString))
+            {
+
+                con.Open();
+
+                string query = @"SELECT * FROM AGENDAMENTO
+	INNER JOIN LAB_API
+    	ON AGENDAMENTO.ID_LAB = LAB_API.ID
+    inner join USUARIO_API
+    	ON AGENDAMENTO.ID_USUARIO = USUARIO_API.ID WHERE ID_LAB = @ID_LAB";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@ID_LAB", idLab);
+
+
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+
+                    while (rdr.Read())
+                    {
+                        var agendamento = new AgendamentoDTO
+                        {
+                            Id = Convert.ToInt32(rdr["ID"]),
+                            IdLab = Convert.ToInt32(rdr["ID_LAB"]),
+                            IdUsuario = Convert.ToInt32(rdr["ID_USUARIO"]),
+                            Data = Convert.ToDateTime(rdr["DATA"]),
+                            NmLab = rdr["LAB"].ToString(),
+                            NmUsuario = rdr["NOME"].ToString(),
+                        };
+
+                        agendamentos.Add(agendamento);
+                    }
+                    con.Close();
+                }
+            }
+            return agendamentos;
         }
         public void Ativar(int id)
         {

@@ -1,0 +1,54 @@
+﻿@page
+@model AcAPI4.Pages.LabModel
+@{
+}
+
+<div>
+    <input type="hidden" name="id" id="id" />
+    <label>Lab</label>
+    <input type="text" name="lab" id="lab" />
+
+    <label>DtCadastro</label>
+    <input type="date" name="dt_Cadastro" id="dt_Cadastro"  />
+
+    <label>Andar</label>
+    <input type="number" name="andar" id="andar"  />
+
+    <label>Descrição</label>
+    <input type="text" name="descricao" id="descricao"  />
+    <button onclick="salvar()">Salvar</button>
+</div><br />
+
+<table>
+    <thead>
+        <tr>
+            <th>Lab</th>
+            <th>Andar</th>
+            <th>Ativo?</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody Id="tbodyLab">
+    </tbody>
+</table><br />
+<div id="divHorarios" style="display:none">
+    <div><input type="hidden" id="idLabAgendamento"/>
+        <label>Data</label>
+        <input type="date" name="dataLab" id="dataLab" />
+        <button onclick="salvarHorario()">Salvar</button>
+    </div><br />
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Usuário</th>
+            </tr>
+        </thead>
+        <tbody Id="tbodyHorarios">
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script src="~/js/lab.js" asp-append-version="true"></script>
+}

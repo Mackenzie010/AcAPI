@@ -1,0 +1,41 @@
+﻿@page
+@model AcAPI4.Pages.LoginModel
+@{
+    Layout = "_LayoutLogin";
+}
+@section CSS{
+    <link rel="stylesheet" href="~/css/Login.css" asp-append-version="true" />
+}
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-content">
+            <h1>Login</h1>
+
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" class="input100" placeholder="email" />
+            </div>
+
+            <div>
+                <label for="senha">Senha:</label>
+                <input type="password" name="senha" id="senha" class="input100" placeholder="senha" />
+            </div>
+
+            <div>
+                <button onclick="logar()" class="green-button">Entrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/login.js" asp-append-version="true"></script>
+</body>
+</html>

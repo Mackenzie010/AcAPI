@@ -1,5 +1,4 @@
 ﻿using AcAPI.BLL;
-using AcAPI.DAL;
 using AcAPI.DAO;
 using AcAPI.Helpers;
 using Microsoft.OpenApi.Models;
@@ -21,7 +20,6 @@ namespace AcAPI
             services.AddScoped<IUsuarioDAO, UsuarioDAO>();
             services.AddScoped<ILab, LabBO>();
             services.AddScoped<ILabDAO, LabDAO>();
-            services.AddScoped<IRickDAO, RickDAO>();
 
 
             services.AddCors(op =>

@@ -1,0 +1,63 @@
+﻿@page
+@model AcAPI4.Pages.UsuarioModel
+@{
+}
+
+
+@section CSS{
+    <link rel="stylesheet" href="~/css/usuario.css" asp-append-version="true" />
+}
+
+
+<form id="formUsuario">
+
+    <div>
+        <input type="hidden" name="id" id="id" />
+        <label>Nome</label><br />
+        <input type="text" name="name" id="name" required />
+    </div>
+
+    <div>
+        <label>Data de Nascimento</label><br />
+        <input type="date" name="birthday" id="birthday" required />
+    </div>
+
+    <div>
+        <label>Email</label><br />
+        <input type="text" name="email" id="email" required />
+    </div>
+
+    <div>
+        <label>Cpf</label><br />
+        <input type="text" name="cpf" id="cpf" required />
+    </div>
+
+    <div>
+        <label>Celular</label><br />
+        <input type="text" name="phone" id="phone" required />
+    </div>
+
+    <div class="Senha">
+        <label>Senha</label><br />
+        <input type="password" name="password" id="password" required />
+    </div><br />
+
+    <button onclick="salvar()" style="background-color:gray">Salvar</button>
+</form>
+<button style="margin-top:12px" id="btnVisualizarLista" onclick="visualizarLista()">Visualizar Lista</button>
+<table style="display:none" id="tabelaUsuario">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Ativo?</th>
+            <th style="width:150px">Ações</th>
+        </tr>
+    </thead>
+    <tbody id="tbodyUsuario">
+    </tbody>
+</table>
+
+@section Scripts{
+    <script src="~/js/usuario.js" asp-append-version="true"></script>
+}

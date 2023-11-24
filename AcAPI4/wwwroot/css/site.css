@@ -1,0 +1,61 @@
+﻿.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+tbody {
+    background-color: wheat;
+}
+
+table {
+    width: 100%;
+    border: 1px solid black;
+}
+
+    table tr th,
+    table tbody tr td {
+        border: 1px solid black;
+    }
+
+form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    width: 100px;
+}
+
+.form-group input,
+.form-group select {
+    flex: 1;
+    margin-left: 10px;
+}
+
+body {
+    background-color: lightblue;
+}
+
+.excluir-link {
+    color: red;
+    text-decoration: none;
+}
+
+

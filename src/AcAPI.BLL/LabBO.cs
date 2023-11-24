@@ -16,7 +16,10 @@ namespace AcAPI.BLL
         {
             _labDAO.Incluir(lab);
         }
-
+        public void IncluirAgendamento(AgendamentoDTO agendamento)
+        {
+            _labDAO.IncluirAgendamento(agendamento);
+        }
         public void Excluir(int id)
         {
             _labDAO.Excluir(id);
@@ -26,7 +29,12 @@ namespace AcAPI.BLL
         {
             return _labDAO.Listar();
         }
-         
+
+        public List<AgendamentoDTO> ListarAgendamentosPorLab(int idLab)
+        {
+            return _labDAO.ListarAgendamentosPorLab(idLab);
+        }
+
         public void Atualizar(LabDTO lab)
         {
             _labDAO.Atualizar(lab);

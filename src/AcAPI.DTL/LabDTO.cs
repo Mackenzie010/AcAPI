@@ -12,6 +12,6 @@
 
         public bool Ativo { get; set; }
 
-        public DateOnly Dt_Cadastro { get; set; }
+        public DateTime Dt_Cadastro { get; set; }
     }
 }
